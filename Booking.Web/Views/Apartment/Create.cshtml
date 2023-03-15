@@ -1,0 +1,96 @@
+﻿@model Booking.Web.Models.ApartmentViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text_action">Creation Apartament</h2>
+        </div>
+        <form asp-action="Create" enctype="multipart/form-data" class="needs-validation" onsubmit="onCreateApartmentSubmit();">
+            <div class="col-12">
+                <div class="input-group">
+                    <div class="input-group-prepend w-10">
+                        <span class="input-group-text w-100" id="input-name">Name</span>
+                    </div>
+                    <input asp-for="Name" type="text" class="form-control" aria-describedby="input-name">
+                </div>
+                <div class="mb-3">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <label class="input-group-text w-10" for="selectCity">City</label>
+                    <select class="form-select" id="selectCity" asp-for="@Model.CityFilterApplied"
+                            asp-items="@Model.Cities"></select>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <label class="input-group-text w-10" for="selectApartmentType">ApartmentType</label>
+                    <select class="form-select" id="selectApartmentType" asp-for="@Model.ApartmentTypeFilterApplied"
+                            asp-items="@Model.ApartmentTypes"></select>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="input-group">
+                    <span class="input-group-text w-10" id="input-peopleNumber">People Number</span>
+                    <input asp-for="PeopleNumber" type="number" min="1" max="10" class="form-control"
+                           aria-describedby="input-peopleNumber">
+                </div>
+                <div class="mb-3">
+                    <span asp-validation-for="PeopleNumber" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="input-group">
+                    <span class="input-group-text w-10" id="input-address">Address</span>
+                    <input asp-for="Address" type="text" class="form-control"
+                           aria-describedby="input-address">
+                </div>
+                <div class="mb-3">
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="input-group">
+                    <span class="input-group-text w-10" id="input-description">Description</span>
+                    <input asp-for="Description" type="text" class="form-control"
+                           aria-describedby="input-description">
+                </div>
+                <div class="mb-3">
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="input-group">
+                    <span class="input-group-text w-10" id="input-price">Price</span>
+                    <input asp-for="Price" class="form-control" aria-describedby="input-price">
+                </div>
+                <div class="mb-3">
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="input-group">
+                    <label asp-for="Pictures" class="input-group-text w-10">Pictures</label>
+                    <input type="file" name="Pictures" id="input-picture" class="form-control" required multiple onchange="onInputFileChange();" />
+                </div>
+                <div class="mb-3">
+                    <span class="file-error-message text-danger"></span>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 150px;">Create</button>
+            <a asp-controller=Apartment asp-action="Index" class="btn btn-outline-primary" style="width:150px">
+                Cancel
+            </a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

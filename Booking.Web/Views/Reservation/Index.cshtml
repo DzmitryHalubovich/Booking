@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Booking.Web.Models.ReservationViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text_action">Current reservations list</h2>
+        </div>
+    </div>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <partial name="ReservationPartial/_ReservationCartPartial" model="@item"/>            
+        }
+    </div>
+</div>

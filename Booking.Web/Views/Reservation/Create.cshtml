@@ -1,0 +1,128 @@
+﻿@model Booking.Web.Models.ReservationViewModel
+
+@{
+    ViewData["Title"] = "Create";   
+}
+
+<div class="container">
+    <div class="row">
+        <h2>@Model.ApartmentName</h2>
+        <div class="col-4">
+            @Model.ApartmentDescription
+        </div>
+        <div class="col-8">
+            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    @{
+                        int index = 1;
+                        foreach (var picture in Model.ApartmentPictures!.Skip(1))
+                        {
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@index" aria-label="Slide 2"></button>
+                            index++;
+                        }
+                    }
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="~/@Model.ApartmentPictures!.FirstOrDefault()!.PictureUrl" class="d-block w-100" alt="photo">
+                    </div>
+                    @foreach (var picture in Model.ApartmentPictures!.Skip(1))
+                    {
+                        <div class="carousel-item">
+                            <img src="~/@picture.PictureUrl" class="d-block w-100" alt="photo">
+                        </div>
+                    }
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" name="apartmentId" value="@(Model.ApartmentId)" />
+                <input type="hidden" name="apartmentName" value="@(Model.ApartmentName)" />
+                <input type="hidden" name="apartmentDescription" value="@(Model.ApartmentDescription)" />
+                @*<input type="hidden" name="apartmentPicture" value="@(Model.ApartmentPicture)" />                *@
+                <input type="hidden" name="price" value="@(Model.Price)" />
+                <div class="col-12">
+                    <div class="input-group mt-3 mb-3">
+                        <span class="input-group-text w-10" id="input-price">Price</span>
+                        <input asp-for="Price" disabled class="form-control" aria-describedby="input-price">
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="input-group">
+                        <span class="input-group-text w-10" id="input-name">Name</span>
+                        <input asp-for="Name" class="form-control" aria-describedby="input-name"
+                            placeholder="Enter your name">                        
+                    </div>
+                    <div class="mb-3">
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="input-group">
+                        <span class="input-group-text w-10" id="input-email">Email</span>
+                        <input asp-for="Email" class="form-control" aria-describedby="input-email"
+                            placeholder="Enter your email">                        
+                    </div>
+                    <div class="mb-3">
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="input-group">
+                        <span class="input-group-text w-10" id="arrivalDate">Check in</span>
+                        <input type="date" asp-for="ArrivalDateS" class="form-control datepicker"
+                            aria-describedby="arrivalDate" readonly/>                        
+                    </div>     
+                    <div class="mb-3">
+                        <span asp-validation-for="ArrivalDateS" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="input-group">
+                        <span class="input-group-text w-10" id="departureDate">Check out</span>
+                        <input type="date" asp-for="DepartureDateS" class="form-control datepicker"
+                               aria-describedby="departureDate" readonly/>                        
+                    </div>
+                    <div class="mb-3">
+                        <span asp-validation-for="DepartureDateS" class="text-danger"></span>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 150px;">Reserve</button>
+                <a asp-controller=Apartment asp-action="Index" class="btn btn-outline-primary" style="width:150px">
+                    Cancel
+                </a>
+
+                <div class="d-flex justify-content-between" style="margin-top:20px">
+                    <h2>Reviews</h2>
+                    <h2>Rate</h2>
+                </div>
+
+                <div class="container">
+                    <div class="row">
+                        <partial name="ReviewPartial/_ReviewsListPartial" model="@Model" />
+                    </div>
+                </div>
+
+            </form>
+            
+        </div>
+    </div>
+</div>
+@section Scripts {   
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

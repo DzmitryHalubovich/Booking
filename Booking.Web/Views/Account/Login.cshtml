@@ -1,0 +1,59 @@
+﻿@model Booking.Web.Models.LoginViewModel
+
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "Login Page";
+}
+
+@using Booking.Web.Models.Account
+@inject IOptions<CaptchaConfig> CaptchaConfig
+
+<script src="https://www.google.com/recaptcha/api.js?render=@CaptchaConfig.Value.SiteKey"></script>
+<script>
+    $(function () {
+        grecaptcha.ready(function () {
+            grecaptcha.execute('@CaptchaConfig.Value.SiteKey', { action: 'submit' }).then(function (token) {
+                document.getElementById("captchaToken").value = token;
+            });
+        });
+    });
+</script>
+
+<div style="padding: 40px;"></div>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <span class="anchor"></span>
+                    <div class="card card-account card-outline-secondary border border-white">
+                        <div class="card-header">
+                            <h3 class="mb-0 text-center ParagraphHome">Login</h3>
+                        </div>
+                        <div class="card-body">
+                            <form asp-controller="Account" asp-action="Login">
+                                <div asp-validation-summary="All" style="font-size:23px; font-family:Impact" class="text-danger text-center"></div>
+                                <div class="form-group">
+                                    <input asp-for="Login" placeholder="Email" class="form-control textbox-dg font-weight-bold text-center" type="text">
+                                    <span asp-validation-for="Login" />
+                                </div>
+                                <div class="form-group">
+                                    <input autocomplete="new-password" asp-for="Password" placeholder="Password" class="form-control textbox-dg font-weight-bold text-center" type="password">
+                                    <span asp-validation-for="Password" />
+                                </div>
+                                <input type="hidden" asp-for="ReCaptcha" id="captchaToken" />
+                                <button class="btn btn-success btn-lg float-right" type="submit">Login</button>
+                            </form>
+                            <form>
+                                <button asp-controller="Account" asp-action="LoginWithGoogle" class="btn text-white" style="background-color: #dd4b39;" href="#!" role="button">
+                                    <i class="bi bi-google"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

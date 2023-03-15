@@ -1,0 +1,142 @@
+﻿@model ApartmentIndexViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@*<div class="col-8">
+    <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="5000">
+                <img src="~/Images/MainPagePhotos/beach1.jpeg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item" data-bs-interval="5000">
+                <img src="~/Images/2.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item" data-bs-interval="5000">
+                <img src="~/Images/2.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="..." class="d-block w-100" alt="...">
+            </div>
+        </div>
+    </div>
+</div>*@
+<div class="container-fluid my-carousel">
+    <div id="carouselExampleControls" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="7000">
+                <img src="~/Images/MainPagePhotos/Bali.jpg" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h2>Choose your destiny!</h2>
+                    <h4>Rare sights await the visitors to this place.</h4>
+                </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="7000">
+                <img src="~/Images/MainPagePhotos/GreenLake.jpg" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h2>Hyrry up!</h2>
+                    <h3>Booking tickets in advance, you can save more than half of their cost.</h3>
+                </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="10000">
+                <img src="~/Images/MainPagePhotos/switzerland.jpg" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h2>Interesting fact №141 -  Sudan outranks Egypt in ancient pyramids</h2>
+                    <h5>You might associate Egypt with those towering wonders, but while you’ll find around 100 there, you can experience more than 250 in Sudan!
+                            Built by ancient Kushite rulers, they were developed between 2500BC to 300AD.</h5>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <h2 class="text_action">Available apartments</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a class="btn btn-outline-primary" asp-action="Create">
+                <i class="bi bi-file-earmark-plus"></i> &nbsp; Create new
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <form method="get">
+                <div class="input-group mb-3 mt-3">
+                    <input asp-for="@Model.Options!.SearchText" type="text" class="form-control"
+                        placeholder="Text search" aria-label="Enter text to search">
+                    <div class="input-group-append">
+                        <button class="btn btn-secondary" type="submit">Search</button>
+                    </div>
+                    <label class="input-group-text" for="selecApartmentType">Type</label>
+                    <select class="form-select apartment-type-select" id="selecApartmentType"
+                        asp-for="@Model.Options!.ApartmentTypeFilterApplied" asp-items="@Model.ApartmentTypes"
+                        onchange="this.form.submit()"></select>
+                    <label class="input-group-text" for="selectCity">City</label>
+                    <select class="form-select city-select" id="selectCity" asp-for="@Model.Options!.CityFilterApplied"
+                        asp-items="@Model.Cities" onchange="this.form.submit()"></select>
+                    <span class="input-group-text">People Number</span>
+                    <input asp-for="@Model.Options!.NeedPeopleNumber" type="number" min="1" max="10"
+                        class="form-control people-number-input" aria-describedby="inputGroup-sizing-name"
+                        onchange="this.form.submit()">
+                    <span class="input-group-text">Check in</span>
+                    <input type="date" min="@Model.Options!.MinArrivalDate" asp-for="@Model.Options.ArrivalDateS"
+                        class="form-control datepicker" onchange="this.form.submit()" />
+                    <span class="input-group-text">Check out</span>
+                    <input type="date" min="@Model.Options.MinDepartureDate" asp-for="@Model.Options.DepartureDateS"
+                        value="@Model.Options.DepartureDateS" class="form-control datepicker"
+                        onchange="this.form.submit()" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-6">
+            <form method="get">
+                <input type="hidden" name="pageOptions.CurrentPage"
+                    value="@(Model.Options.PageOptions.CurrentPage - 1)" />
+                <partial name="ApartmentPartial/_ApartmentPaginationPartial" model="@Model" />
+                @if (Model.Options.PageOptions.HasPreviousPage)
+                {
+                    <input class="btn btn-dark btn-sm" type="submit" value="Prev" />
+                }
+                else
+                {
+                    <input class="btn btn-dark btn-sm" disabled type="submit" value="Prev" />
+                }
+            </form>
+        </div>
+        <div class="col-6 text-end">
+            <form method="get">
+                <input type="hidden" name="pageOptions.CurrentPage"
+                    value="@(Model.Options.PageOptions.CurrentPage + 1)" />
+                <partial name="ApartmentPartial/_ApartmentPaginationPartial" model="@Model" />
+                @if (Model.Options.PageOptions.HasNextPage)
+                {
+                    <input class="btn btn-dark btn-sm" type="submit" value="Next" />
+                }
+                else
+                {
+                    <input class="btn btn-dark btn-sm" disabled type="submit" value="Next" />
+                }
+            </form>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <partial name="ApartmentPartial/_ApartmentCartPartial" model="@Model"/>        
+        </div>    
+    </div>
+</div>
+
+
